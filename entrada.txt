@@ -1,0 +1,41 @@
+programa {
+	constantes {
+
+		inteiro max1 = 10, max2 = 20 ;
+	}
+
+	metodo principal (texto x) : vazio {
+		variaveis {
+			inteiro i;		
+		}
+
+		enquanto(i >= b ) {
+		
+		escreva( i );
+		leia( i );
+		
+		i = a - b;
+	
+		}
+		se (i > b ) entao {
+			escreva ( i );
+			leia ( i ) ;
+
+			i = a + b ;
+		
+		} senao {
+			
+			i = i - b ;
+
+		}
+
+		resultado i;
+
+	}
+
+} 	
+		
+
+	
+		
+
