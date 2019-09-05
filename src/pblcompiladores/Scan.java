@@ -108,7 +108,7 @@ public class Scan {
             } else if (!c.equals("programa")) {
                 if(c.equals('{')){
                     c.equals(getToken());
-                    if(c.equals("constatntes")){
+                    if(c.equals("constantes")){
                         
                         defConstante(c.equals(getToken()));
                     }
@@ -145,7 +145,7 @@ public class Scan {
     public void defGlobal(boolean equals) throws IOException {
         c.equals(getToken());
         if (c.equals("constantes")) {
-            defConstante(c.equals(getToken()));
+           // defConstante(c.equals(getToken()));
             c.equals(getToken());
 
             if (c.equals("principal")) {
