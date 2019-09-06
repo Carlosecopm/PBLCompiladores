@@ -15,7 +15,7 @@ public class PilhaInvertida {
     No topo = null;
 
     //Método que empilha valores.
-    public void Empilha(String valor) {
+    public void empilha(String valor) {
         No novo = new No();
         novo.setValor(valor);
         novo.setAnterior(topo);
@@ -24,7 +24,7 @@ public class PilhaInvertida {
     }
     //Método para desempilhar valores
 
-    public String Desempilha() throws EmptyStackException {
+    public String desempilha() throws EmptyStackException {
         if (topo == null) {
             throw new EmptyStackException("A pilha está vazia");
         } else {
@@ -35,7 +35,7 @@ public class PilhaInvertida {
     }
     //Método para listar pilha. Percorre os nós da pilha atribuindo seus valores em um ArrayList
 
-    public ArrayList<String> Listar() throws EmptyStackException {
+    public ArrayList<String> listar() throws EmptyStackException {
         if (topo == null) {
             throw new EmptyStackException("A pilha invertida está vazia");
         } else {

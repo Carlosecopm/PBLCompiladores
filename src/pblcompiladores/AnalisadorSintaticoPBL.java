@@ -20,12 +20,14 @@ public class AnalisadorSintaticoPBL {
      *
      *
      */
+    String c = null;
+
     public static void main(String[] args) throws IOException {
 
         File arq = new File("entrada.txt");
         Pilha pilha = new Pilha();
         PilhaInvertida pilhaInvertida = new PilhaInvertida();
-        Scan scan;
+        Scan scan = null;
 
         try {
 
@@ -78,7 +80,7 @@ public class AnalisadorSintaticoPBL {
                         int linha1 = st.lineno();
                         pilha.empilha(numero, linha1);
 
-                       System.out.println("Numero:: " + st.nval);
+                        System.out.println("Numero:: " + st.nval);
                         System.out.println("linha: " + st.lineno());
                         break;
 
@@ -88,7 +90,7 @@ public class AnalisadorSintaticoPBL {
                         char outros = (char) token;
                         int linha2 = st.lineno();
                         System.out.println("outros: " + outros);
-                        
+
                         pilha.empilhaCaracter(outros, linha2);
 
                         if (token == '!') {
@@ -140,48 +142,55 @@ public class AnalisadorSintaticoPBL {
         }
 
         for (String vl : listar) {
-            pilhaInvertida.Empilha(vl);
+            pilhaInvertida.empilha(vl);
             System.out.println(vl);
         }
-        
+
         ArrayList<String> listarInvertida = new ArrayList<String>();
-            try{
-               listarInvertida = pilhaInvertida.Listar();
-               
-            }
-            catch(EmptyStackException e){
-               System.out.println(e.getMessage());
-            }
-            
-            int indice = 0;
-            
-            while(indice < listarInvertida.size()){
-               String vl =(String)listarInvertida.get(indice);
-               indice ++;
-               if(vl.equals("programa")){
-                    System.out.println("dentro do if: ");
-                    
-               }else if(!vl.equals("programa")){
-                   System.out.println("dentro do segundo if: ");
-                   if(vl.equals("{")){
-                       
-                   }
-               }else{
-                   //Erro
-               }
-                
-               System.out.println("pilha invertida teste: "+vl);
-            }
-            
-            
 
-    }
+        try {
+            listarInvertida = pilhaInvertida.listar();
 
-    private static void constantes(String d) throws IOException {
-        //To change body of generated methods, choose Tools | Templates.
-        String constante = d;
-        if (constante.equals("inteiro")) {
+        } catch (EmptyStackException e) {
+            System.out.println(e.getMessage());
         }
+        String listarInvertidadesempilha = null;
+        int indice = 0;
+        boolean resultado;
+
+        while (indice < listarInvertida.size()) {
+            String vl = (String) listarInvertida.get(indice);
+            listarInvertidadesempilha = pilhaInvertida.desempilha();
+
+            if (listarInvertidadesempilha.equals("programa")) {
+                System.out.println("if: " + vl);
+
+            } else if (!listarInvertidadesempilha.equals("programa")) {
+                System.out.println("else if: " + vl);
+                if (listarInvertidadesempilha.equals("constantes")) {
+
+                    scan.defGlobal(vl);
+                }
+
+                if (listarInvertidadesempilha.equals("metodo")) {
+                    resultado = scan.defMetodo();
+                }
+
+                if (listarInvertidadesempilha.equals("enquanto")) {
+
+                    resultado = scan.defEnquanto(vl);
+                }
+
+            } else {
+                //erro
+            }
+
+            indice++;
+
+            System.out.println("pilha invertida teste: " + vl);
+            System.out.println("desempilha invertida teste: " + listarInvertidadesempilha);
+        }
+
     }
 
 }
