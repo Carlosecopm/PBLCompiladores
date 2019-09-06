@@ -5,28 +5,26 @@
  */
 package pblcompiladores;
 
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  *
  * @author carlos
  */
-public class Pilha {
-    //Variavel para definição do topo da pilha.
-
+public class PilhaInvertida {
     No topo = null;
-   
-    //Método que empilha valores.
 
-    public void empilha(String valor, int linha) {
+    //Método que empilha valores.
+    public void Empilha(String valor) {
         No novo = new No();
-        novo.setValor(valor,linha);
+        novo.setValor(valor);
         novo.setAnterior(topo);
         topo = novo;
+        System.out.println("pilha invertida: "+ novo.getValor());
     }
     //Método para desempilhar valores
 
-    public String desempilha() throws EmptyStackException {
+    public String Desempilha() throws EmptyStackException {
         if (topo == null) {
             throw new EmptyStackException("A pilha está vazia");
         } else {
@@ -37,29 +35,17 @@ public class Pilha {
     }
     //Método para listar pilha. Percorre os nós da pilha atribuindo seus valores em um ArrayList
 
-    public ArrayList<String> listar() throws EmptyStackException {
+    public ArrayList<String> Listar() throws EmptyStackException {
         if (topo == null) {
-            throw new EmptyStackException("A pilha está vazia");
+            throw new EmptyStackException("A pilha invertida está vazia");
         } else {
             ArrayList<String> listar = new ArrayList<String>();
             No aux = topo;
             while (aux != null) {
                 listar.add(aux.getValor());
                 aux = aux.getAnterior();
-                
-                
             }
             return listar;
         }
     }
-    
-    public void empilhaCaracter(char outros, int linha) {
-        No novo = new No();
-        String valor = String.valueOf(outros);
-        novo.setValor(valor,linha);
-        novo.setAnterior(topo);
-        topo = novo;
-    }
-
-    
 }

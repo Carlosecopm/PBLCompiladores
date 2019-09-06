@@ -24,6 +24,8 @@ public class AnalisadorSintaticoPBL {
 
         File arq = new File("entrada.txt");
         Pilha pilha = new Pilha();
+        PilhaInvertida pilhaInvertida = new PilhaInvertida();
+        Scan scan;
 
         try {
 
@@ -129,7 +131,7 @@ public class AnalisadorSintaticoPBL {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
+        //imprime pilha
         ArrayList<String> listar = new ArrayList<String>();
         try {
             listar = pilha.listar();
@@ -138,8 +140,40 @@ public class AnalisadorSintaticoPBL {
         }
 
         for (String vl : listar) {
+            pilhaInvertida.Empilha(vl);
             System.out.println(vl);
         }
+        
+        ArrayList<String> listarInvertida = new ArrayList<String>();
+            try{
+               listarInvertida = pilhaInvertida.Listar();
+               
+            }
+            catch(EmptyStackException e){
+               System.out.println(e.getMessage());
+            }
+            
+            int indice = 0;
+            
+            while(indice < listarInvertida.size()){
+               String vl =(String)listarInvertida.get(indice);
+               indice ++;
+               if(vl.equals("programa")){
+                    System.out.println("dentro do if: ");
+                    
+               }else if(!vl.equals("programa")){
+                   System.out.println("dentro do segundo if: ");
+                   if(vl.equals("{")){
+                       
+                   }
+               }else{
+                   //Erro
+               }
+                
+               System.out.println("pilha invertida teste: "+vl);
+            }
+            
+            
 
     }
 

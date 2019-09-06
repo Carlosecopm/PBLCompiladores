@@ -28,6 +28,10 @@ public class No {
     public void setValor(String valor, int linha) {
         this.valor = valor;
     }
+    
+     public void setValor(String valor) {
+        this.valor = valor;
+    }
     //Retorna valor do nó
 
     public String getValor() {
