@@ -10,7 +10,7 @@ package pblcompiladores;
  * @author carlos
  */
 public class No {
-
+//
     private String valor,linha;
     private No anterior;
     //Define nó anterior

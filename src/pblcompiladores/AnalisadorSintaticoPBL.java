@@ -25,6 +25,7 @@ public class AnalisadorSintaticoPBL {
     public static void main(String[] args) throws IOException {
 
         File arq = new File("entrada.txt");
+        File arqSAida = new File("saida.txt");
         Pilha pilha = new Pilha();
         PilhaInvertida pilhaInvertida = new PilhaInvertida();
         Scan scan = null;
@@ -35,6 +36,15 @@ public class AnalisadorSintaticoPBL {
             String str;
 
             FileReader fileReader = new FileReader(arq);
+
+            //criando o arquivo de saída fisicamente
+            arqSAida.createNewFile();
+
+            //essa linha abre o fluxo do arquivo , true reescreve no arrquivo sem apagar o conteúdo
+            FileWriter fileWriter = new FileWriter(arqSAida, false);
+
+            //passamos  o objeto FileReader em seu construtor, para escrevermos fisicamente no arquivo;
+            PrintWriter printWriter = new PrintWriter(fileWriter);
 
             // cria um novo tokenizer
             Reader r = new BufferedReader(fileReader);
@@ -54,7 +64,10 @@ public class AnalisadorSintaticoPBL {
 
                 switch (token) {
                     case StreamTokenizer.TT_EOF:
-                        System.out.println("End of File encountered.");
+                        System.out.println("Fim de arquivo encontrado.");
+                       
+                        // fechando o arquivo de sáida
+                        printWriter.close();
                         eof = true;
                         break;
 
@@ -66,10 +79,11 @@ public class AnalisadorSintaticoPBL {
                         System.out.println("\ntestando palavra: " + st.sval);
                         String palavra = st.sval;
                         int linha = st.lineno();
-                        //String valor = d;
-                        //System.out.println("d: " + d);
-                        //System.out.println("valor: " + valor);
                         pilha.empilha(palavra, linha);
+
+                        printWriter.println(palavra);
+                        printWriter.println(linha);
+                        printWriter.flush();
 
                         System.out.println("testando linha: " + st.lineno());
                         break;
@@ -79,6 +93,10 @@ public class AnalisadorSintaticoPBL {
                         String numero = Double.toString(num);
                         int linha1 = st.lineno();
                         pilha.empilha(numero, linha1);
+
+                        printWriter.println(numero);
+                        printWriter.println(linha1);
+                        printWriter.flush();
 
                         System.out.println("Numero:: " + st.nval);
                         System.out.println("linha: " + st.lineno());
@@ -92,6 +110,10 @@ public class AnalisadorSintaticoPBL {
                         System.out.println("outros: " + outros);
 
                         pilha.empilhaCaracter(outros, linha2);
+
+                        printWriter.println(outros);
+                        printWriter.println(linha2);
+                        printWriter.flush();
 
                         if (token == '!') {
                             eof = true;
@@ -112,17 +134,8 @@ public class AnalisadorSintaticoPBL {
                     case StreamTokenizer.TT_EOL:
                         System.out.println(" ");
                         break;
-                    /*
-                    case StreamTokenizer.TT_WORD:
-                        System.out.println("palavra2: " + st.sval);
-                        break;
-                     
-                    case StreamTokenizer.TT_NUMBER:
-                        System.out.println("Numero2: " + st.nval);
-                        break;
-                     */
+
                     default:
-                        //System.out.println((char) token + "CARLOS.");
 
                         if (token == '!') {
                             eof = true;
@@ -169,7 +182,8 @@ public class AnalisadorSintaticoPBL {
                 System.out.println("else if: " + vl);
                 if (listarInvertidadesempilha.equals("constantes")) {
 
-                    scan.defGlobal(vl);
+                    resultado = scan.defGlobal(vl, indice);
+                    System.out.println("resultado: " + resultado);
                 }
 
                 if (listarInvertidadesempilha.equals("metodo")) {
@@ -179,6 +193,15 @@ public class AnalisadorSintaticoPBL {
                 if (listarInvertidadesempilha.equals("enquanto")) {
 
                     resultado = scan.defEnquanto(vl);
+                }
+
+                if (listarInvertidadesempilha.equals("se")) {
+                    resultado = scan.defSe();
+                }
+
+                if (listarInvertidadesempilha.equals("senao")) {
+                    //senão
+                    resultado = scan.defSenao();
                 }
 
             } else {
