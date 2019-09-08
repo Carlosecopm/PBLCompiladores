@@ -20,27 +20,27 @@ import jdk.nashorn.internal.ir.BreakNode;
  * @author carlos
  */
 public class Scan {
-    
+
     PilhaInvertida pilhaInvertida = new PilhaInvertida();
     ArrayList<String> listarInvertida = new ArrayList<String>();
     int indice = 0;
     String listarInvertidadesempilha = null;
     boolean resultado = true;
     Object objeto = null;
-    
+
     public boolean defGlobal(String vl, int indice) throws IOException {
         String local = vl;
         int indiceLocal = indice;
-        
+
         if (local.equals("constantes")) {
-            
+
             indiceLocal++;
             local = (String) listarInvertida.get(indiceLocal);
             listarInvertidadesempilha = pilhaInvertida.desempilha();
             if (local.equals("{")) {
                 resultado = defConstante(local, indiceLocal);
             }
-            
+
         }
         return false;
     }
@@ -53,14 +53,14 @@ public class Scan {
     public boolean defConstante(String local, int indiceLocal) throws IOException {
         String localConst = local;
         int indiceConst = indiceLocal;
-        
+
         if (localConst.equals("{")) {
             while (local.equals("}")) {
-                
+
                 indiceConst++;
                 localConst = (String) listarInvertida.get(indiceConst);
                 listarInvertidadesempilha = pilhaInvertida.desempilha();
-                
+
                 if (localConst.equals("texto") || localConst.equals("inteiro")
                         || localConst.equals("real")
                         || localConst.equals("boleano")) {
@@ -68,27 +68,27 @@ public class Scan {
                     localConst = (String) listarInvertida.get(indiceConst);
                     listarInvertidadesempilha = pilhaInvertida.desempilha();
                     objeto = (String) localConst;
-                    
+
                     if (localConst.equals(objeto)) {
                         indiceConst++;
                         localConst = (String) listarInvertida.get(indiceConst);
                         listarInvertidadesempilha = pilhaInvertida.desempilha();
-                        
+
                         if (localConst.equals("=")) {
                             indiceConst++;
                             localConst = (String) listarInvertida.get(indiceConst);
                             listarInvertidadesempilha = pilhaInvertida.desempilha();
                             objeto = (String) localConst;
-                            
+
                             if (localConst.equals(objeto)) {
                                 indiceConst++;
                                 localConst = (String) listarInvertida.get(indiceConst);
                                 listarInvertidadesempilha = pilhaInvertida.desempilha();
-                                
+
                                 if (localConst.equals(",")) {
-                                    
+
                                 } else if (localConst.equals(";")) {
-                                    
+
                                 }
                             }
                         }
@@ -96,73 +96,73 @@ public class Scan {
                 }
             }
         }
-        
+
         return false;
     }
-    
+
     public boolean defMetodos(String vl) throws IOException {
         String localPrincipal = vl;
         if (localPrincipal.equals("principal") || localPrincipal.equals(vl)) {
             while (indice < listarInvertida.size()) {
                 //String vl = (String) listarInvertida.get(indice);
                 listarInvertidadesempilha = pilhaInvertida.desempilha();
-                
+
                 if (!listarInvertidadesempilha.equals("reslutado") || listarInvertidadesempilha.equals("vazio")) {
                     vl = (String) listarInvertida.get(indice);
                     listarInvertidadesempilha = pilhaInvertida.desempilha();
                     Object Obejct = (Object) vl;
-                    
+
                     if (listarInvertidadesempilha.equals("(")) {
                         vl = (String) listarInvertida.get(indice);
                         listarInvertidadesempilha = pilhaInvertida.desempilha();
-                        
+
                         if (listarInvertidadesempilha.equals("texto") || listarInvertidadesempilha.equals("inteiro")
                                 || listarInvertidadesempilha.equals("real") || listarInvertidadesempilha.equals("boleano")) {
                             vl = (String) listarInvertida.get(indice);
                             listarInvertidadesempilha = pilhaInvertida.desempilha();
-                            
+
                             if (listarInvertidadesempilha.equals(Obejct)) {
                                 vl = (String) listarInvertida.get(indice);
                                 listarInvertidadesempilha = pilhaInvertida.desempilha();
-                                
+
                                 if (listarInvertidadesempilha.equals(")")) {
                                     vl = (String) listarInvertida.get(indice);
                                     listarInvertidadesempilha = pilhaInvertida.desempilha();
-                                    
+
                                     if (listarInvertidadesempilha.equals(":")) {
                                         vl = (String) listarInvertida.get(indice);
                                         listarInvertidadesempilha = pilhaInvertida.desempilha();
-                                        
+
                                         if (listarInvertidadesempilha.equals("vazio")
                                                 || listarInvertidadesempilha.equals("resultado")) {
                                             vl = (String) listarInvertida.get(indice);
                                             listarInvertidadesempilha = pilhaInvertida.desempilha();
-                                            
+
                                             if (listarInvertidadesempilha.equals("{")) {
                                                 vl = (String) listarInvertida.get(indice);
                                                 listarInvertidadesempilha = pilhaInvertida.desempilha();
-                                                
+
                                                 if (listarInvertidadesempilha.equals("variaveis")) {
                                                     defVariaveis(vl);
-                                                    
+
                                                 }
-                                                
+
                                             }
-                                            
+
                                         }
-                                        
+
                                     }
-                                    
+
                                 }
-                                
+
                             }
-                            
+
                         }
                     }
                 }
             }
             indice++;
-            
+
         }
         vl = (String) listarInvertida.get(indice);
         listarInvertidadesempilha = pilhaInvertida.desempilha();
@@ -187,39 +187,39 @@ public class Scan {
                     }
                 }
             }
-            
+
         }
         return false;
     }
-    
+
     public boolean defGlobal2() throws IOException {
         String c = null;
         if (c.equals("global")) {
-            
+
             if (c.equals("metodo")) {
                 defMetodo();
-                
+
                 if (c.equals("global")) {
                     defGlobal2();
-                    
+
                 } else {
                     //ERRO
                 }
             } else {
                 //ERRO
             }
-            
+
         } else {
             //ERRO
         }
         return false;
     }
-    
+
     public boolean defMetodo() throws IOException {
         while (indice < listarInvertida.size()) {
             String vl = (String) listarInvertida.get(indice);
             listarInvertidadesempilha = pilhaInvertida.desempilha();
-            
+
             if (listarInvertidadesempilha.equals("metodo")) {
                 while (!listarInvertidadesempilha.equals("}")) {
                     vl = (String) listarInvertida.get(indice);
@@ -231,42 +231,42 @@ public class Scan {
                     if (listarInvertidadesempilha.equals(object)) {
                         defMetodos(vl);
                     }
-                    
+
                 }
             }
             indice++;
-            
+
         }
         return false;
     }
-    
+
     public void tipo() throws IOException {
         //To change body of generated methods, choose Tools | Templates.
 
         String c = null;
         if (c.equals("tipo")) {
             tipoId(c.equals("tipo"));
-            
+
         }
         return;
     }
-    
+
     public String tipoId(boolean equals) throws IOException {
         String c = null;
         if (c.equals("inteiro")) {
-            
+
         } else if (c.equals("real")) {
-            
+
         } else if (c.equals("texto")) {
-            
+
         } else if (c.equals("boleano")) {
-            
+
         } else {
             //erro
         }
         return null;
     }
-    
+
     public void valor() {
         for (char a = 'a'; a <= 'z'; a++) {
             //letra.add(Character.valueOf(a));  // sem autoboxing
@@ -275,23 +275,18 @@ public class Scan {
         }
         return;
     }
-    
-    public void valorConstante() {
-        //NUMERO ou CADEIA DE CARACTER
-        return;
-    }
-    
+
     public void listaParametro() throws IOException {
         String tipoId = null,
                 c = null;
-        
+
         tipoId = tipoId(c.equals("tipo"));
         //concatenar com identificador
 
         listaParametro2();
         return;
     }
-    
+
     public void listaParametro2() throws IOException {
         String c = null;
         if (c.equals(',')) {
@@ -299,22 +294,22 @@ public class Scan {
             //tipoId = tipoId(c.equals("tipo"));
             //concatenar com identificador
             listaParametro2();
-            
+
         }
         return;
     }
-    
+
     public void listaArgumentos() throws IOException {
         atribuicao();
         listaArgumentos2();
         return;
     }
-    
+
     public void atribuicao() {
         //To change body of generated methods, choose Tools | Templates.
         return;
     }
-    
+
     public void listaArgumentos2() throws IOException {
         String c = null;
         if (c.equals(',')) {
@@ -322,7 +317,7 @@ public class Scan {
             //tipoId = tipoId(c.equals("tipo"));
             //concatenar com identificador
             listaArgumentos2();
-            
+
         }
         return;
     }
@@ -332,7 +327,7 @@ public class Scan {
         constante();
         return;
     }
-    
+
     public void constante() throws IOException {
         String c = null;
         if (c.equals(';')) {
@@ -344,21 +339,21 @@ public class Scan {
         }
         return;
     }
-    
+
     public void listaConstante2() throws IOException {
         listaConstate();
         return;
     }
-    
+
     public void atribuicaoConstate() {
         String c = null;
         listaATribuicaoConstante();
         if (c.equals("identificador")) {
-            
+
         }
         return;
     }
-    
+
     public void listaATribuicaoConstante() {
         String c = null;
         if (c.equals(';')) {
@@ -366,12 +361,12 @@ public class Scan {
         }
         return;
     }
-    
+
     public void declaracao() {
         //To change body of generated methods, choose Tools | Templates.
         return;
     }
-    
+
     private boolean defVariaveis(String vl) {
         String localPrincipal = vl;
         boolean resultado = true;
@@ -379,29 +374,29 @@ public class Scan {
             while (indice < listarInvertida.size()) {
                 //String vl = (String) listarInvertida.get(indice);
                 listarInvertidadesempilha = pilhaInvertida.desempilha();
-                
+
                 if (!listarInvertidadesempilha.equals("}")) {
                     vl = (String) listarInvertida.get(indice);
                     listarInvertidadesempilha = pilhaInvertida.desempilha();
                     Object Obejct = (Object) vl;
                     if (listarInvertidadesempilha.equals("(inteiro") || listarInvertidadesempilha.equals("real")
                             || listarInvertidadesempilha.equals("texto") || listarInvertidadesempilha.equals("boleano")) {
-                        
+
                     } else if (listarInvertidadesempilha.equals(Obejct)) {
-                        
+
                     } else if (listarInvertidadesempilha.equals(";") || listarInvertidadesempilha.equals(",")) {
-                        
+
                     }
                 }
                 return resultado;
             }
             indice++;
-            
+
         }
         //To change body of generated methods, choose Tools | Templates.
         return false;
     }
-    
+
     public boolean defEnquanto(String vl) {
         String localEnquanto = vl;
         boolean resultado = true;
@@ -409,22 +404,22 @@ public class Scan {
             while (indice < listarInvertida.size()) {
                 //String vl = (String) listarInvertida.get(indice);
                 listarInvertidadesempilha = pilhaInvertida.desempilha();
-                
+
                 if (!listarInvertidadesempilha.equals("}")) {
                     vl = (String) listarInvertida.get(indice);
                     listarInvertidadesempilha = pilhaInvertida.desempilha();
-                    
+
                     if (listarInvertidadesempilha.equals("(")) {
                         indice++;
                         vl = (String) listarInvertida.get(indice);
                         listarInvertidadesempilha = pilhaInvertida.desempilha();
                         Object Obejct = (Object) vl;
-                        
+
                         if (listarInvertidadesempilha.equals("(inteiro") || listarInvertidadesempilha.equals("real")
                                 || listarInvertidadesempilha.equals("texto") || listarInvertidadesempilha.equals("boleano")) {
                             vl = (String) listarInvertida.get(indice);
                             listarInvertidadesempilha = pilhaInvertida.desempilha();
-                            
+
                             if (listarInvertidadesempilha.equals(Obejct)) {
                                 vl = (String) listarInvertida.get(indice);
                                 listarInvertidadesempilha = pilhaInvertida.desempilha();
@@ -436,7 +431,7 @@ public class Scan {
                                     indice++;
                                     vl = (String) listarInvertida.get(indice);
                                     listarInvertidadesempilha = pilhaInvertida.desempilha();
-                                    
+
                                     if (listarInvertidadesempilha.equals(Obejct)) {
                                         indice++;
                                         vl = (String) listarInvertida.get(indice);
@@ -458,27 +453,27 @@ public class Scan {
                                 }
                             }
                         }
-                        
+
                     } else if (listarInvertidadesempilha.equals(";") || listarInvertidadesempilha.equals(",")) {
-                        
+
                     }
                 }
                 return resultado;
             }
             indice++;
-            
+
         }
-        
+
         return false;
-        
+
     }
-    
+
     public boolean defLeiaEScreva(String vl) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     boolean defSe() {
-        
+
         Object obejct;
         while (indice < listarInvertida.size()) {
             String vl = (String) listarInvertida.get(indice);
@@ -487,7 +482,7 @@ public class Scan {
                 while (indice < listarInvertida.size()) {
                     vl = (String) listarInvertida.get(indice);
                     listarInvertidadesempilha = pilhaInvertida.desempilha();
-                    
+
                     if (!listarInvertidadesempilha.equals("}")) {
                         indice++;
                         vl = (String) listarInvertida.get(indice);
@@ -501,7 +496,7 @@ public class Scan {
                                 indice++;
                                 vl = (String) listarInvertida.get(indice);
                                 listarInvertidadesempilha = pilhaInvertida.desempilha();
-                                
+
                                 if (listarInvertidadesempilha.equals("!=") || listarInvertidadesempilha.equals("==") | listarInvertidadesempilha.equals("!=")
                                         || listarInvertidadesempilha.equals("<") || listarInvertidadesempilha.equals("<=")
                                         || listarInvertidadesempilha.equals(">") || listarInvertidadesempilha.equals(">=")
@@ -534,11 +529,11 @@ public class Scan {
                                                         }
                                                     }
                                                 }
-                                                
+
                                             }
                                         }
                                     }
-                                    
+
                                 }
                             }
                         }
@@ -549,17 +544,17 @@ public class Scan {
         }
         indice++;
         return false;
-        
+
     }
-    
+
     boolean defSenao() {
-        
+
         while (indice < listarInvertida.size()) {
             String vl = (String) listarInvertida.get(indice);
             listarInvertidadesempilha = pilhaInvertida.desempilha();
             if (listarInvertidadesempilha.equals("senao")) {
                 while (!vl.equals("}")) {
-                    
+
                     indice++;
                     vl = (String) listarInvertida.get(indice);
                     listarInvertidadesempilha = pilhaInvertida.desempilha();
@@ -572,25 +567,25 @@ public class Scan {
                     }
                     return resultado;
                 }
-                
+
             }
         }
         indice++;
         return false;
-        
+
     }
-    
+
     private boolean defExpressao(String vl, int indice1) {
         int indiceExp = indice;
         String varExpr = vl;
-        
+
         if (varExpr.equals(vl)) {
             while (indiceExp < listarInvertida.size()) {
                 indiceExp++;
                 vl = (String) listarInvertida.get(indiceExp);
                 listarInvertidadesempilha = pilhaInvertida.desempilha();
                 objeto = (String) vl;
-                
+
                 if (vl.equals("!=") || vl.equals("==") | vl.equals("!=")
                         || vl.equals("<") || vl.equals("<=")
                         || vl.equals(">") || vl.equals(">=")
@@ -598,7 +593,7 @@ public class Scan {
                     indiceExp++;
                     vl = (String) listarInvertida.get(indiceExp);
                     listarInvertidadesempilha = pilhaInvertida.desempilha();
-                    
+
                     objeto = (String) vl;
                     if (listarInvertidadesempilha.equals(objeto)) {
                         indiceExp++;
@@ -610,23 +605,23 @@ public class Scan {
                         if (vl.equals("+") || vl.equals("-")
                                 || vl.equals("*") || vl.equals("/")
                                 || vl.equals("++") || vl.equals("--")) {
-                            
+
                             indiceExp++;
                             vl = (String) listarInvertida.get(indice);
                             listarInvertidadesempilha = pilhaInvertida.desempilha();
                             objeto = (String) vl;
-                            
+
                             if (listarInvertidadesempilha.equals(objeto)) {
                                 indiceExp++;
                                 vl = (String) listarInvertida.get(indice);
                                 listarInvertidadesempilha = pilhaInvertida.desempilha();
                                 objeto = (String) vl;
-                                
+
                                 if (vl.equals(";")) {
                                     return resultado;
                                 }
                             }
-                            
+
                         }
                     }
                 }
@@ -635,5 +630,5 @@ public class Scan {
         return false;
         //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
