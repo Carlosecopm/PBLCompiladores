@@ -5,6 +5,7 @@
  */
 package pblcompiladores;
 
+import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,24 +22,54 @@ import jdk.nashorn.internal.ir.BreakNode;
  */
 public class Scan {
 
-    PilhaInvertida pilhaInvertida = new PilhaInvertida();
+    PilhaArqTemp pilhaArqTemp = new PilhaArqTemp();
     ArrayList<String> listarInvertida = new ArrayList<String>();
     int indice = 0;
     String listarInvertidadesempilha = null;
+    String valor;
     boolean resultado = true;
     Object objeto = null;
 
+    public void lerArquivo() throws FileNotFoundException, IOException {
+        FileInputStream stream = new FileInputStream("temp.txt");
+        InputStreamReader reader = new InputStreamReader(stream);
+        BufferedReader br = new BufferedReader(reader);
+        String linha = br.readLine();
+        while (linha != null) {
+            valor = linha;
+            pilhaArqTemp.empilha(valor);
+            System.out.println(linha);
+
+            linha = br.readLine();
+        }
+
+    }
+
+    public boolean defPrograma() {
+        listarInvertida = pilhaArqTemp.listar();
+        String local = null;
+        int indiceLocal = 0;
+        while (indiceLocal < listarInvertida.size()) {
+            local = (String) listarInvertida.get(indice);
+            listarInvertidadesempilha = pilhaArqTemp.desempilha();
+        }
+
+        return false;
+    }
+
     public boolean defGlobal(String vl, int indice) throws IOException {
         String local = vl;
-        int indiceLocal = indice;
-
+        int indiceLocal =0;
+        System.out.println("defGlobal: " + vl);
+        System.out.println("indiceLocal: " + indiceLocal);
         if (local.equals("constantes")) {
 
             indiceLocal++;
             local = (String) listarInvertida.get(indiceLocal);
-            listarInvertidadesempilha = pilhaInvertida.desempilha();
+            listarInvertidadesempilha = pilhaArqTemp.desempilha();
             if (local.equals("{")) {
-                resultado = defConstante(local, indiceLocal);
+                //resultado = defConstante(local, indiceLocal);
+                return true;
             }
 
         }
@@ -59,31 +90,31 @@ public class Scan {
 
                 indiceConst++;
                 localConst = (String) listarInvertida.get(indiceConst);
-                listarInvertidadesempilha = pilhaInvertida.desempilha();
+                listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                 if (localConst.equals("texto") || localConst.equals("inteiro")
                         || localConst.equals("real")
                         || localConst.equals("boleano")) {
                     indiceConst++;
                     localConst = (String) listarInvertida.get(indiceConst);
-                    listarInvertidadesempilha = pilhaInvertida.desempilha();
+                    listarInvertidadesempilha = pilhaArqTemp.desempilha();
                     objeto = (String) localConst;
 
                     if (localConst.equals(objeto)) {
                         indiceConst++;
                         localConst = (String) listarInvertida.get(indiceConst);
-                        listarInvertidadesempilha = pilhaInvertida.desempilha();
+                        listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                         if (localConst.equals("=")) {
                             indiceConst++;
                             localConst = (String) listarInvertida.get(indiceConst);
-                            listarInvertidadesempilha = pilhaInvertida.desempilha();
+                            listarInvertidadesempilha = pilhaArqTemp.desempilha();
                             objeto = (String) localConst;
 
                             if (localConst.equals(objeto)) {
                                 indiceConst++;
                                 localConst = (String) listarInvertida.get(indiceConst);
-                                listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                                 if (localConst.equals(",")) {
 
@@ -105,42 +136,42 @@ public class Scan {
         if (localPrincipal.equals("principal") || localPrincipal.equals(vl)) {
             while (indice < listarInvertida.size()) {
                 //String vl = (String) listarInvertida.get(indice);
-                listarInvertidadesempilha = pilhaInvertida.desempilha();
+                listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                 if (!listarInvertidadesempilha.equals("reslutado") || listarInvertidadesempilha.equals("vazio")) {
                     vl = (String) listarInvertida.get(indice);
-                    listarInvertidadesempilha = pilhaInvertida.desempilha();
+                    listarInvertidadesempilha = pilhaArqTemp.desempilha();
                     Object Obejct = (Object) vl;
 
                     if (listarInvertidadesempilha.equals("(")) {
                         vl = (String) listarInvertida.get(indice);
-                        listarInvertidadesempilha = pilhaInvertida.desempilha();
+                        listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                         if (listarInvertidadesempilha.equals("texto") || listarInvertidadesempilha.equals("inteiro")
                                 || listarInvertidadesempilha.equals("real") || listarInvertidadesempilha.equals("boleano")) {
                             vl = (String) listarInvertida.get(indice);
-                            listarInvertidadesempilha = pilhaInvertida.desempilha();
+                            listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                             if (listarInvertidadesempilha.equals(Obejct)) {
                                 vl = (String) listarInvertida.get(indice);
-                                listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                                 if (listarInvertidadesempilha.equals(")")) {
                                     vl = (String) listarInvertida.get(indice);
-                                    listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                    listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                                     if (listarInvertidadesempilha.equals(":")) {
                                         vl = (String) listarInvertida.get(indice);
-                                        listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                        listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                                         if (listarInvertidadesempilha.equals("vazio")
                                                 || listarInvertidadesempilha.equals("resultado")) {
                                             vl = (String) listarInvertida.get(indice);
-                                            listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                            listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                                             if (listarInvertidadesempilha.equals("{")) {
                                                 vl = (String) listarInvertida.get(indice);
-                                                listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                                listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                                                 if (listarInvertidadesempilha.equals("variaveis")) {
                                                     defVariaveis(vl);
@@ -165,23 +196,23 @@ public class Scan {
 
         }
         vl = (String) listarInvertida.get(indice);
-        listarInvertidadesempilha = pilhaInvertida.desempilha();
+        listarInvertidadesempilha = pilhaArqTemp.desempilha();
         if (vl.equals("vazio") || vl.equals("resustado")) {
             indice++;
             vl = (String) listarInvertida.get(indice);
-            listarInvertidadesempilha = pilhaInvertida.desempilha();
+            listarInvertidadesempilha = pilhaArqTemp.desempilha();
             objeto = (String) vl;
             if (vl.equals(objeto)) {
                 indice++;
                 vl = (String) listarInvertida.get(indice);
-                listarInvertidadesempilha = pilhaInvertida.desempilha();
+                listarInvertidadesempilha = pilhaArqTemp.desempilha();
                 indice++;
                 vl = (String) listarInvertida.get(indice);
-                listarInvertidadesempilha = pilhaInvertida.desempilha();
+                listarInvertidadesempilha = pilhaArqTemp.desempilha();
                 if (vl.equals(";")) {
                     indice++;
                     vl = (String) listarInvertida.get(indice);
-                    listarInvertidadesempilha = pilhaInvertida.desempilha();
+                    listarInvertidadesempilha = pilhaArqTemp.desempilha();
                     if (vl.equals("}")) {
                         return resultado;
                     }
@@ -218,12 +249,12 @@ public class Scan {
     public boolean defMetodo() throws IOException {
         while (indice < listarInvertida.size()) {
             String vl = (String) listarInvertida.get(indice);
-            listarInvertidadesempilha = pilhaInvertida.desempilha();
+            listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
             if (listarInvertidadesempilha.equals("metodo")) {
                 while (!listarInvertidadesempilha.equals("}")) {
                     vl = (String) listarInvertida.get(indice);
-                    listarInvertidadesempilha = pilhaInvertida.desempilha();
+                    listarInvertidadesempilha = pilhaArqTemp.desempilha();
                     if (listarInvertidadesempilha.equals("principal")) {
                         defMetodos(vl);
                     }
@@ -373,11 +404,11 @@ public class Scan {
         if (localPrincipal.equals("variaveis")) {
             while (indice < listarInvertida.size()) {
                 //String vl = (String) listarInvertida.get(indice);
-                listarInvertidadesempilha = pilhaInvertida.desempilha();
+                listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                 if (!listarInvertidadesempilha.equals("}")) {
                     vl = (String) listarInvertida.get(indice);
-                    listarInvertidadesempilha = pilhaInvertida.desempilha();
+                    listarInvertidadesempilha = pilhaArqTemp.desempilha();
                     Object Obejct = (Object) vl;
                     if (listarInvertidadesempilha.equals("(inteiro") || listarInvertidadesempilha.equals("real")
                             || listarInvertidadesempilha.equals("texto") || listarInvertidadesempilha.equals("boleano")) {
@@ -403,26 +434,26 @@ public class Scan {
         if (localEnquanto.equals("enquanto")) {
             while (indice < listarInvertida.size()) {
                 //String vl = (String) listarInvertida.get(indice);
-                listarInvertidadesempilha = pilhaInvertida.desempilha();
+                listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                 if (!listarInvertidadesempilha.equals("}")) {
                     vl = (String) listarInvertida.get(indice);
-                    listarInvertidadesempilha = pilhaInvertida.desempilha();
+                    listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                     if (listarInvertidadesempilha.equals("(")) {
                         indice++;
                         vl = (String) listarInvertida.get(indice);
-                        listarInvertidadesempilha = pilhaInvertida.desempilha();
+                        listarInvertidadesempilha = pilhaArqTemp.desempilha();
                         Object Obejct = (Object) vl;
 
                         if (listarInvertidadesempilha.equals("(inteiro") || listarInvertidadesempilha.equals("real")
                                 || listarInvertidadesempilha.equals("texto") || listarInvertidadesempilha.equals("boleano")) {
                             vl = (String) listarInvertida.get(indice);
-                            listarInvertidadesempilha = pilhaInvertida.desempilha();
+                            listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                             if (listarInvertidadesempilha.equals(Obejct)) {
                                 vl = (String) listarInvertida.get(indice);
-                                listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                listarInvertidadesempilha = pilhaArqTemp.desempilha();
                                 //!= | == | < | <= | > | >= | =
                                 if (listarInvertidadesempilha.equals("!=") || listarInvertidadesempilha.equals("==") | listarInvertidadesempilha.equals("!=")
                                         || listarInvertidadesempilha.equals("<") || listarInvertidadesempilha.equals("<=")
@@ -430,20 +461,20 @@ public class Scan {
                                         || listarInvertidadesempilha.equals("=")) {
                                     indice++;
                                     vl = (String) listarInvertida.get(indice);
-                                    listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                    listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                                     if (listarInvertidadesempilha.equals(Obejct)) {
                                         indice++;
                                         vl = (String) listarInvertida.get(indice);
-                                        listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                        listarInvertidadesempilha = pilhaArqTemp.desempilha();
                                         if (listarInvertidadesempilha.equals(")")) {
                                             indice++;
                                             vl = (String) listarInvertida.get(indice);
-                                            listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                            listarInvertidadesempilha = pilhaArqTemp.desempilha();
                                             if (listarInvertidadesempilha.equals("{")) {
                                                 indice++;
                                                 vl = (String) listarInvertida.get(indice);
-                                                listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                                listarInvertidadesempilha = pilhaArqTemp.desempilha();
                                                 if (listarInvertidadesempilha.equals("leia") || listarInvertidadesempilha.equals("escreva")) {
                                                     resultado = defLeiaEScreva(vl);
                                                 }
@@ -477,25 +508,25 @@ public class Scan {
         Object obejct;
         while (indice < listarInvertida.size()) {
             String vl = (String) listarInvertida.get(indice);
-            listarInvertidadesempilha = pilhaInvertida.desempilha();
+            listarInvertidadesempilha = pilhaArqTemp.desempilha();
             if (listarInvertidadesempilha.equals("se")) {
                 while (indice < listarInvertida.size()) {
                     vl = (String) listarInvertida.get(indice);
-                    listarInvertidadesempilha = pilhaInvertida.desempilha();
+                    listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                     if (!listarInvertidadesempilha.equals("}")) {
                         indice++;
                         vl = (String) listarInvertida.get(indice);
-                        listarInvertidadesempilha = pilhaInvertida.desempilha();
+                        listarInvertidadesempilha = pilhaArqTemp.desempilha();
                         if (listarInvertidadesempilha.equals("(")) {
                             indice++;
                             vl = (String) listarInvertida.get(indice);
-                            listarInvertidadesempilha = pilhaInvertida.desempilha();
+                            listarInvertidadesempilha = pilhaArqTemp.desempilha();
                             obejct = (Object) vl;
                             if (listarInvertidadesempilha.equals(obejct)) {
                                 indice++;
                                 vl = (String) listarInvertida.get(indice);
-                                listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                                 if (listarInvertidadesempilha.equals("!=") || listarInvertidadesempilha.equals("==") | listarInvertidadesempilha.equals("!=")
                                         || listarInvertidadesempilha.equals("<") || listarInvertidadesempilha.equals("<=")
@@ -503,27 +534,27 @@ public class Scan {
                                         || listarInvertidadesempilha.equals("=")) {
                                     indice++;
                                     vl = (String) listarInvertida.get(indice);
-                                    listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                    listarInvertidadesempilha = pilhaArqTemp.desempilha();
                                     if (listarInvertidadesempilha.equals(obejct)) {
                                         indice++;
                                         vl = (String) listarInvertida.get(indice);
-                                        listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                        listarInvertidadesempilha = pilhaArqTemp.desempilha();
                                         if (listarInvertidadesempilha.equals(obejct)) {
                                             indice++;
                                             vl = (String) listarInvertida.get(indice);
-                                            listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                            listarInvertidadesempilha = pilhaArqTemp.desempilha();
                                             if (listarInvertidadesempilha.equals(")")) {
                                                 indice++;
                                                 vl = (String) listarInvertida.get(indice);
-                                                listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                                listarInvertidadesempilha = pilhaArqTemp.desempilha();
                                                 if (listarInvertidadesempilha.equals("entao")) {
                                                     indice++;
                                                     vl = (String) listarInvertida.get(indice);
-                                                    listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                                    listarInvertidadesempilha = pilhaArqTemp.desempilha();
                                                     if (listarInvertidadesempilha.equals("{")) {
                                                         indice++;
                                                         vl = (String) listarInvertida.get(indice);
-                                                        listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                                        listarInvertidadesempilha = pilhaArqTemp.desempilha();
                                                         if (listarInvertidadesempilha.equals("leia") || listarInvertidadesempilha.equals("escreva")) {
                                                             resultado = defLeiaEScreva(vl);
                                                         }
@@ -551,17 +582,17 @@ public class Scan {
 
         while (indice < listarInvertida.size()) {
             String vl = (String) listarInvertida.get(indice);
-            listarInvertidadesempilha = pilhaInvertida.desempilha();
+            listarInvertidadesempilha = pilhaArqTemp.desempilha();
             if (listarInvertidadesempilha.equals("senao")) {
                 while (!vl.equals("}")) {
 
                     indice++;
                     vl = (String) listarInvertida.get(indice);
-                    listarInvertidadesempilha = pilhaInvertida.desempilha();
+                    listarInvertidadesempilha = pilhaArqTemp.desempilha();
                     if (listarInvertidadesempilha.equals("{")) {
                         indice++;
                         vl = (String) listarInvertida.get(indice);
-                        listarInvertidadesempilha = pilhaInvertida.desempilha();
+                        listarInvertidadesempilha = pilhaArqTemp.desempilha();
                         resultado = defExpressao(vl, indice);
                         return resultado;
                     }
@@ -583,7 +614,7 @@ public class Scan {
             while (indiceExp < listarInvertida.size()) {
                 indiceExp++;
                 vl = (String) listarInvertida.get(indiceExp);
-                listarInvertidadesempilha = pilhaInvertida.desempilha();
+                listarInvertidadesempilha = pilhaArqTemp.desempilha();
                 objeto = (String) vl;
 
                 if (vl.equals("!=") || vl.equals("==") | vl.equals("!=")
@@ -592,13 +623,13 @@ public class Scan {
                         || vl.equals("=")) {
                     indiceExp++;
                     vl = (String) listarInvertida.get(indiceExp);
-                    listarInvertidadesempilha = pilhaInvertida.desempilha();
+                    listarInvertidadesempilha = pilhaArqTemp.desempilha();
 
                     objeto = (String) vl;
                     if (listarInvertidadesempilha.equals(objeto)) {
                         indiceExp++;
                         vl = (String) listarInvertida.get(indiceExp);
-                        listarInvertidadesempilha = pilhaInvertida.desempilha();
+                        listarInvertidadesempilha = pilhaArqTemp.desempilha();
                         indice++;
                         //+ | - | * | / | ++ | --
 
@@ -608,13 +639,13 @@ public class Scan {
 
                             indiceExp++;
                             vl = (String) listarInvertida.get(indice);
-                            listarInvertidadesempilha = pilhaInvertida.desempilha();
+                            listarInvertidadesempilha = pilhaArqTemp.desempilha();
                             objeto = (String) vl;
 
                             if (listarInvertidadesempilha.equals(objeto)) {
                                 indiceExp++;
                                 vl = (String) listarInvertida.get(indice);
-                                listarInvertidadesempilha = pilhaInvertida.desempilha();
+                                listarInvertidadesempilha = pilhaArqTemp.desempilha();
                                 objeto = (String) vl;
 
                                 if (vl.equals(";")) {

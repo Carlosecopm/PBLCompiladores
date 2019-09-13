@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author carlos
  */
-public class PilhaInvertida {
+public class PilhaArqTemp {
     No topo = null;
 
     //Método que empilha valores.
@@ -48,4 +48,6 @@ public class PilhaInvertida {
             return listar;
         }
     }
+    
+    
 }
