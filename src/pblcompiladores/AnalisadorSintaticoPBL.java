@@ -27,6 +27,8 @@ public class AnalisadorSintaticoPBL {
         Pilha pilha = new Pilha();
         // PilhaInvertida pilhaInvertida = new PilhaInvertida();
         Scan scan = new Scan();
+        boolean resultado;
+        
 
         try {
 
@@ -62,22 +64,22 @@ public class AnalisadorSintaticoPBL {
 
                 switch (token) {
                     case StreamTokenizer.TT_EOF:
-                        System.out.println("Fim de arquivo encontrado.");
+                       // System.out.println("Fim de arquivo encontrado.");
 
                         eof = true;
                         break;
 
                     case StreamTokenizer.TT_EOL:
-                        System.out.println(" ");
+                       // System.out.println(" ");
                         break;
 
                     case StreamTokenizer.TT_WORD:
-                        System.out.println("\ntestando palavra: " + st.sval);
+                      //  System.out.println("\ntestando palavra: " + st.sval);
                         String palavra = st.sval;
                         int linha = st.lineno();
                         pilha.empilha(palavra, linha);
 
-                        System.out.println("testando linha: " + st.lineno());
+                       // System.out.println("testando linha: " + st.lineno());
                         break;
 
                     case StreamTokenizer.TT_NUMBER:
@@ -86,16 +88,16 @@ public class AnalisadorSintaticoPBL {
                         int linha1 = st.lineno();
                         pilha.empilha(numero, linha1);
 
-                        System.out.println("Numero:: " + st.nval);
-                        System.out.println("linha: " + st.lineno());
+                       // System.out.println("Numero:: " + st.nval);
+                       // System.out.println("linha: " + st.lineno());
                         break;
 
                     default:
-                        System.out.println((char) token + " encontrado.");
-                        System.out.println("linha: " + st.lineno());
+                        //System.out.println((char) token + " encontrado.");
+                        //System.out.println("linha: " + st.lineno());
                         char outros = (char) token;
                         int linha2 = st.lineno();
-                        System.out.println("outros: " + outros);
+                       // System.out.println("outros: " + outros);
 
                         pilha.empilhaCaracter(outros, linha2);
 
@@ -111,12 +113,12 @@ public class AnalisadorSintaticoPBL {
 
                 switch (token) {
                     case StreamTokenizer.TT_EOF:
-                        System.out.println(" ");
+                      //  System.out.println(" ");
                         eof = true;
                         break;
 
                     case StreamTokenizer.TT_EOL:
-                        System.out.println(" ");
+                       // System.out.println(" ");
                         break;
 
                     default:
@@ -141,16 +143,22 @@ public class AnalisadorSintaticoPBL {
             while (indice < listar.size()) {
                 String vl = (String) listar.get(indice);
                 listarDesempilha = pilha.desempilha();
-                System.out.println("pilha2: " + vl);
-                System.out.println("desempilha 2: " + listarDesempilha);
+                //System.out.println("pilha2: " + vl);
+                //System.out.println("desempilha 2: " + listarDesempilha);
                 printWriter.println(vl);
-                System.out.println();
+               // System.out.println();
                 indice++;
             }
 
             // fechando o arquivo temp
             printWriter.close();
-            System.out.println("Chamou Scan");
+            resultado = scan.lerArquivo();
+            if(resultado == true){
+                System.out.println("CODIGO CORRETO: SUCEESSO ");
+            }else{
+                System.out.println("SINTAXE ERRADA " );
+            }
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
